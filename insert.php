@@ -42,25 +42,54 @@ if(!$connessione){
 //     echo "Errore durante la creazione della Persona: " . $connessione->error;
 // }
 
-$sql = "INSERT INTO persone (nome, cognome, email) VALUES (?,?,?)";
+// INSERIMENTO DATI PREPARE & EXECUTE
+// $sql = "INSERT INTO persone (nome, cognome, email) VALUES (?,?,?)";
+// if ($statement = $connessione->prepare($sql)) {
+//     $statement->bind_param("sss", $nome, $cognome, $email);
+//     $nome = $_POST['nome'];
+//     $cognome = $_POST['cognome'];
+//     $email = $_POST['email'];
+//     $statement->execute();
+//     echo "Record inseriti con successo";
+// }else {
+//     echo "Errore: non possiamo eseguire la query" . $connessione->error;
+// }
+//$statement->close();
 
-if ($statement = $connessione->prepare($sql)) {
-    $statement->bind_param("sss", $nome, $cognome, $email);
-
-    $nome = "Leonardo";
-    $nome = "Giobbe";
-    $nome = "giobbe.luca@example.com";
-    $statement->execute();
-
-    $nome = "Giacomo";
-    $nome = "Dacomo";
-    $nome = "giacomo.puzzina@example.com";
-    $statement->execute();
-
-    echo "Record inseriti con successo";
-}else {
-    echo "Errore: non possiamo eseguire la query: $sql. " . $connessione->error;
+$query_select = "SELECT * FROM persone";
+if ($result = $connessione->query($query_select)) {
+    if ($result->num_rows > 0) {
+        echo '
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Email</th>
+                    </tr>
+                </thead><tbody>';
+        while ($row = $result->fetch_array()) {
+            echo '
+                    <tr>
+                        <td>' . $row['id'] . '</td>
+                        <td>' . $row['nome'] . '</td>
+                        <td>' . $row['cognome'] . '</td>
+                        <td>' . $row['email'] . '</td>
+                    </tr>
+            ';
+        }
+        echo '</tbody></table>';
+    } else {
+        echo "Non ci sono righe per questa query";
+    }
+    
+} else {
+    echo "Errore nel SELECT: " . $connessione->error;
 }
+
+
+
 
 $connessione->close();
 ?>
