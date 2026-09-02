@@ -1,0 +1,15 @@
+<?php
+
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$database = "tutorial_mysql";
+
+$connessione = new mysqli($host, $user, $password, $database);
+
+if (!$connessione) {
+    die("Errore durante la connessione:" . $connessione->connect_error);
+};
+
+
+?>

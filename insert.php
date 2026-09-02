@@ -56,39 +56,46 @@ if(!$connessione){
 // }
 //$statement->close();
 
-$query_select = "SELECT * FROM persone";
-if ($result = $connessione->query($query_select)) {
-    if ($result->num_rows > 0) {
-        echo '
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Email</th>
-                    </tr>
-                </thead><tbody>';
-        while ($row = $result->fetch_array()) {
-            echo '
-                    <tr>
-                        <td>' . $row['id'] . '</td>
-                        <td>' . $row['nome'] . '</td>
-                        <td>' . $row['cognome'] . '</td>
-                        <td>' . $row['email'] . '</td>
-                    </tr>
-            ';
-        }
-        echo '</tbody></table>';
-    } else {
-        echo "Non ci sono righe per questa query";
-    }
+// VISUALIZZAZIONE DATI IN UNA TABELLA
+// $query_select = "SELECT * FROM persone ORDER BY id DESC";
+// if ($result = $connessione->query($query_select)) {
+//     if ($result->num_rows > 0) {
+//         echo '
+//             <table>
+//                 <thead>
+//                     <tr>
+//                         <th>ID</th>
+//                         <th>Nome</th>
+//                         <th>Cognome</th>
+//                         <th>Email</th>
+//                     </tr>
+//                 </thead><tbody>';
+//         while ($row = $result->fetch_array()) {
+//             echo '
+//                     <tr>
+//                         <td>' . $row['id'] . '</td>
+//                         <td>' . $row['nome'] . '</td>
+//                         <td>' . $row['cognome'] . '</td>
+//                         <td>' . $row['email'] . '</td>
+//                     </tr>
+//             ';
+//         }
+//         echo '</tbody></table>';
+//     } else {
+//         echo "Non ci sono righe per questa query";
+//     }
     
-} else {
-    echo "Errore nel SELECT: " . $connessione->error;
+// } else {
+//     echo "Errore nel SELECT: " . $connessione->error;
+// }
+
+$query_update = "UPDATE persone SET email = 'edoardo.midali1995@gmoail.com' WHERE id = '6'";
+$query_delete = "DELETE FROM persone WHERE id = 6";
+if ($connessione->query($query_delete)) {
+    echo "Persona Eliminata con successo";
+}else {
+    echo "errore nella eliminazione della persona";
 }
-
-
 
 
 $connessione->close();
