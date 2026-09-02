@@ -33,11 +33,14 @@
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json)
+        .then(response => response.json())
         .then(data => {
             persone = data;
             console.log('Dati Ricevuti: ', data)
         })
+        .catch((error) => {
+            console.error("Errore: " , error);
+        });
     </script>
 
 </body>
