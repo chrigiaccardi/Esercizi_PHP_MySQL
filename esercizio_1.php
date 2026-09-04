@@ -6,12 +6,28 @@
     <title>Esercitazione Tabella CRUD</title>
 </head>
 <body>
+    <button id="nuova-riga">Inserisci Nuova Persona</button>
     <div id="tabella-container"></div>
     
     <script>
+        // Creiamo l'event listener per la funzione inserisciPersona
+        let inserisciBtn = document.querySelector('#nuova-riga');
+        inserisciBtn.addEventListener('click', inserisciPersona);
+
+        // Andiamo a inserire la tabella creata nell'html dentro il suo container
+        // Selezioniamo l'elemento HTML
+        let tabellaContainer = document.querySelector("#tabella-container");
+        
         // Creazione ed inserimento della tabella popolata da dati (Query SELECT)
         let persone;
-        fetch('./php/select.php', {
+
+        // Creiamo una funzione per la SELECT così da potrla utilizzare anche come riaggiornamento
+        // e la chiamiamo subito per avere la tabella non appena nasce la pagina
+
+        generaTabella();
+
+        function generaTabella(){
+            fetch('./php/select.php', {
             method: 'POST',
             header: {
                 'Content-Type': 'application/json'
@@ -25,7 +41,6 @@
             let tabella = `
                 <table>
                     <thead>
-                        <button id="nuova-riga">Inserisci Nuova Persona</button>
                         <tr>
                             <td>ID</td>
                             <td>NOME</td>
@@ -40,15 +55,14 @@
                     </tbody>
                 </table>
             `;
-            // Andiamo a inserire la tabella creata nell'html dentro il suo container
-            // Selezioniamo l'elemento HTML
-            let tabellaContainer = document.querySelector("#tabella-container");
             // Utilizziamo il metodo insertAdjacentHTML per inserire prima della fine del container la tabella
             tabellaContainer.insertAdjacentHTML("beforeend", tabella);
         })
         .catch((error) => {
             console.error("Errore: " , error);
         });
+        };
+        
 
         function generaRighe(persone){
             let righe = '';
@@ -75,14 +89,14 @@
             return righe;
         };
 
+        function inserisciPersona(){
         // Recupero valori per l'inserimento (Query INSERT INTO)
-
         const formData = new FormData();
-        formData.append('nome', 'Chiara');
+        formData.append('nome', 'Poldo');
         formData.append('cognome', 'Becchio');
-        formData.append('email', 'c.b.2003@gmoail.com');
+        formData.append('email', 'poldo.miao.2023@gmoail.com');
 
-        fetch('./php/select.php', {
+        fetch('./php/insert.php', {
             method: 'POST',
             header: {
                 'Content-Type': 'application/json'
@@ -92,10 +106,15 @@
         .then(response => response.json())
         .then(data => {
             console.log('Dati Inviati: ', data);
+            let tabella = document.querySelector('table');
+            tabellaContainer.removeChild(tabella)
+            generaTabella();
         })
         .catch((error) => {
             console.error("Errore: " , error);
         });
+        }
+
 
     </script>
 
